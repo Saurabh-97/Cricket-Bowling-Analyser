@@ -1,15 +1,10 @@
-import processing.serial.*; //import the Serial library
+import processing.serial.*; 
  Serial myPort;  //the Serial port object
  String val;
  int[] input = new int [4];
  //int[] inputr = new int [2];
  int serialCount=0;
  int tiempoant;
- //int render;
- //PImage img;
-
-// since we're doing serial handshaking, 
-// we need to check if we've heard from the microcontroller
 boolean firstContact = false;
 String sensorReading="";
 import java.io.BufferedWriter;
@@ -17,11 +12,10 @@ import java.io.FileWriter;
 String outFilename = "data.csv"; 
 void setup() {
   size(960, 960,P3D); //make our canvas 200 x 200 pixels big
-  //  initialize your serial port and set the baud rate to 9600
-      myPort = new Serial(this, Serial.list()[0], 115200);
+  
+  myPort = new Serial(this, Serial.list()[0], 115200);
   appendTextToFile(outFilename,"Date,Time,Length_x,Length_y,Line_x,Line_y\n");
-  //img = loadImage("back.jpg");
-}
+  }
 void draw()  {
 textSize(30);
 
@@ -82,15 +76,11 @@ fill(0,0,255);
     fill(153,0,73);
   rect(-i*28,-j*28,28,28);
   }
-         
-          
-        }
-  
-      }
-    int  c=input[3];
+   }
+  }
+    int  c=11-input[3];
     int  d=11-input[2];
-   
- fill(0,0,0);
+  fill(0,0,0);
   rect(-28*c,-28*d,28,28);
   fill(255,255,51);
       text("Yorker", 40,60); 
@@ -104,12 +94,8 @@ tint(255, 200);
 //image(img, -700, -475);
 
       popMatrix();
-
-
-  }
-  
-
-void serialEvent(Serial myPort) {sensorReading = myPort.readStringUntil('\n');
+}
+  void serialEvent(Serial myPort) {sensorReading = myPort.readStringUntil('\n');
   if(sensorReading != null){
     int d=day();
     int m=month();
@@ -127,10 +113,8 @@ void serialEvent(Serial myPort) {sensorReading = myPort.readStringUntil('\n');
   input[2]=abc[2];
   input[3]=abc[3];
   println(abc);
-   
-    }
-  }
-  void appendTextToFile(String filename, String text){
+     
+void appendTextToFile(String filename, String text){
   File f = new File(dataPath(filename));
   if(!f.exists()){
     createFile(f);
@@ -143,9 +127,6 @@ void serialEvent(Serial myPort) {sensorReading = myPort.readStringUntil('\n');
       e.printStackTrace();
   }
 }
-
-// The below part create new subfolder. 
-
 void createFile(File f){
   File parentDir = f.getParentFile();
   try{
