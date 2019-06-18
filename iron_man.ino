@@ -1,8 +1,3 @@
- //11k runtime code
-
-#define cbi(sfr, bit) (_SFR_BYTE(sfr) &= ~_BV(bit))
-#define sbi(sfr, bit) (_SFR_BYTE(sfr) |= _BV(bit))
-//Mux control pins for analog signal (SIG_pin) default for arduino mini pro
 const byte s0 = 26;//selection pins for bigmat columns (O/p section)
 const byte s1 = 27;// EF
 const byte s2 = 28;//port A
@@ -12,7 +7,6 @@ const byte bc0 = 45;//o/p section for  small mat
 const byte bc1 = 44;//port L
 const byte bc2 = 43;
 const byte bc3 = 42;
-
 
 const byte t0 = 53;//big mat i/p section 1
 const byte t1 = 52;// port b
@@ -51,26 +45,20 @@ byte p2[16]={B00000000,B00000001,B00000010,B00000011,B00000100,B00000101,B000001
 int valor = 0;//variable for sending bytes to processing
 int valorback=0;
 int tt2=0;
-
 //matrix for mat
 int calibra[15][12]; //big
 int calibra_b[12][9];//back
 int maxsensor[15][12];//Calibration array for the min values of each od the 225 sensors.
 int maxsensor_b[12][9];
-
-
 int minsensor_b=1000;
 int temp=0;
 int temp2=0;
 int rw=0;
 int cl=0;
 int ttemp2=0;
-int star2=0;
-//Variable for staring the min array
-
-
-void setup(){
-
+int star2=0;  //Variable for staring the min array
+void setup()
+{
 pinMode(s0, OUTPUT);
 pinMode(s1, OUTPUT);
 pinMode(s2, OUTPUT);
@@ -148,14 +136,12 @@ if( temp>maxsensor[j][i])
 }
 }
 
-
-for(byte j = 0; j < 15; j ++){
-
+for(byte j = 0; j < 15; j ++)
+{
 writeMux1(j);
 for(byte i = 0; i < 12; i ++){
 calibra[j][i] = calibra[j][i]/50;
 }
-
 }
 backscreen_calib();
 
@@ -189,70 +175,6 @@ void writeMux3(byte channel){
 PORTC=p3[channel];
 }
 
-void sensing()
-{
-// read it and store it in val
-//unsigned long start=micros();
-
-for(int j = 0; j <15; j++){
-
-writeMux1(j);
-for(int i = 0; i < 12; i++){
-valor = readMux(i);
-  
-t=maxsensor[j][i];
-if(valor>1.3*t) //bigmat
-{ttemp=((valor-calibra[j][i])/calibra[j][i])*100;
-if(ttemp>star)
-{
-star=ttemp;
-a=j;
-b=i;
-
-}
-}
-}
-}
-for (rw=0;rw<12;rw++){
-  writeMux3(rw);
-for(cl=0;cl<9;cl++){
- valorback=readMux2(cl);
-tt2=maxsensor_b[rw][cl];
-    
-if(valorback>2.0*tt2) //smallmat
-{
-  ttemp2=((valorback-calibra_b[rw][cl])/calibra_b[rw][cl])*100;
-if(ttemp2>star2)
-{
-star2=ttemp2;
-c=rw;
-d=cl;
-
-}
-}
-}
-}
-
-//unsigned long yolo=micros();
-//Serial.println(yolo-start);
-if((ca!=a or cb!=b )or (cc!=c or cd!=d))
-      {
-     Serial.print(a);
-     Serial.print(",");
-     Serial.print(b);
-     Serial.print(",");
-     Serial.print(c);
-     Serial.print(",");
-     Serial.println(d);
-     ca=a;
-     cb=b;
-     cc=c;
-     cd=d;
-      }
-star =0;
-star2=0;
-
-}
 
 void backscreendefine()
 {
@@ -277,38 +199,10 @@ temp2=readMux2(q);
 calibra_b[p][q] = calibra_b[p][q]+temp2;
 if( temp2>maxsensor_b[p][q])
 {maxsensor_b[p][q]=temp2;
-}
-}
-}
-}
+}}}}
 
 for(byte j = 0; j < 12; j ++){
 writeMux3(j);
 for(byte i = 0; i < 9; i ++){
 calibra_b[j][i] = calibra_b[j][i]/70;
-}
-}
-
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}}}
