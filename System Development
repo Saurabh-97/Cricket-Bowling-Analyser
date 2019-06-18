@@ -1,0 +1,92 @@
+4.1 Block Diagram
+
+	
+
+
+
+Fig9 Block Diagram
+	The main goal of the system is to monitor and analyze cricket bowling parameters viz. line, length and speed which are the essential parameters of the multi-faceted sport for any budding cricketer. This will help the player to access and improve upon his/her bowling engendering higher performances. Due to this system, the fundamentals of any cricket bowler will be tested and polished.
+ 	An embedded system is designed that uses pressure sensors developed using velostat to detect the location of ball impact, which is then interfaced with the controller, and the acquired data is processed appropriately and is used to give proper information about the line, length, and length of the delivery. 
+	This processed data will be stored in the storage device and specific directory will be maintained for every user for all the overs bowled and this data can be processed using data visualization techniques and can be represented in the form of graphs and chart which provide a summary of the performance and help in better understanding the data instead of mere table or spread sheets. Data can be stored for a longer duration which will help in tracking a performance for a period which gives all the insights in the various trends that has taken place during this period.
+
+4.2 Circuit Diagram:
+
+
+
+
+
+
+
+
+
+
+
+Fig10 Main Circuit
+ 
+Fig11 Speed Circuit
+4.3 PCB
+
+
+
+
+
+
+
+
+
+Fig12 PCB schematic
+
+
+
+
+
+
+
+
+
+
+Fig13 PCB 
+4.4 Explanation:
+The circuit is designed for measuring line and length of ball delivery, it consists of 2 pair of 16:1 mux interfaced with Arduino. One pair of mux is interfaced with Pitch pressure sensing matrix for measuring length of delivery and another pair is connected with back screen matrix for measuring line of delivery. 
+The 16 channels of 1 mux are connected to rows of matrix and the 16 channels of other mux are connected to columns of same matrix. Select pins of multiplexers are connected to Arduino, switching of multiplexer channels is done via Arduino.
+	A voltage divider section is created on the output side and the output of this section is fed to 16 channels of second mux then this Output is given to analog pin of Arduino. 
+	An ultrasonic sensor is interfaced with Arduino for measuring the speed of delivery and the speed data is also fed to csv file.
+4.5 Working:
+The primary task of the system is to measure line, length, speed of delivery. For measurement different sensors are interfaced with microcontroller to acquire the data.
+4.5.1 Pressure sensing mat:
+Pressure sensing mat is designed using velostat polymer. The aim of this sensor is to give the exact location at which pressure is applied. Matrix structure of the mat is helpful in finding the location of pressure change. The sensor will return 2D coordinates of the location of pressure change. A number of copper strips are used as rows and columns and the velostat polymer is sandwiched between the copper strips to create the pressure sensing matrix. The mat used in the system consists of a matrix structure with 30 rows and 12 columns.  The data given by this matrix is used to track the length of delivery. Another matrix of 12 rows and 9 columns is used to measure the line of the delivery. The 30 rows X 12 columns mat used for determining the length of the delivery is placed on the pitch and the 12 rows X 9 columns mat is placed behind the stumps on a vertically oriented screen, which helps in determining the line of delivery. 
+
+The matrix structure is interfaced with the microcontroller using analog multiplexer mux506. The multiplexers are used to control the input and output of the matrix. The rows and columns of the matrix are connected to the channels of separate set of multiplexers responsible for controlling rows and columns independently. The row section of the matrix is used as input and the columns are used to measure the output. 
+The operation of pressure sensing matrix is dependent on change in impedance of the polymer, according to the ohm’s law voltage is directly proportional to impedance, using this law the voltage change at the location of ball’s impact is monitored using the mux.
+	 
+
+
+
+
+
+
+
+Fig 14 Implemented Sensor
+The microcontroller sends a 5V input signal to the multiplexers,which are controls, the switching of rows. The signal is transferred to one channel at a time and the columns are continuously monitored for detecting any major surge in voltage. This voltage surge from the multiplexers is fed into the microcontroller.
+
+
+
+
+
+4.5.2 Ultrasonic speed gun:
+	The speed gun is used for measuring the speed of delivery and it is designed using ultrasonic sensor. Ultrasonic sensors measure distance by using ultrasonic waves. The sensor head emits an ultrasonic wave and receives the wave reflected back from the target. Ultrasonic Sensors measure the distance to the target by measuring the time between the emission and reception.
+
+
+
+Fig 15 ultrasonic waves
+An ultrasonic sensor uses a single ultrasonic element for both emission and reception. In a reflective model ultrasonic sensor, a single oscillator emits and receives ultrasonic waves alternately. This enables miniaturization of the sensor head.
+Ultrasonic sensor module comprises of one transmitter and one receiver. The transmitter can deliver 40 KHz ultrasonic sound while the maximum receiver is designed to accept only 40 KHz sound waves. The receiver ultrasonic sensor that is kept next to the transmitter shall thus be able to receive reflected 40 KHz, once the module faces any obstacle in front. Thus, whenever any obstacles come ahead of the ultrasonic module it calculates the time taken from sending the signals to receiving them since time and distance are related for sound waves passing through air medium at 343.2m/sec.
+Distance calculation:
+ The distance can be calculated with the following formula:
+Distance L = 1/2 × T × C
+where L is the distance, T is the time between the emission and reception, and C is the sonic speed. (The value is multiplied by 1/2 because T is the time for go-and-return distance.)
+Speed measurement:
+ 	The ultrasonic sensor is placed on the stumps facing towards the bowler. The sensor continuously emits ultrasound, when the ball is bowled the sensor detects the ball twice, one at distance d1 and one more time at distance d2. So, only two waves reflected back at the distances d1 and d2 are considered. This enables us to determine the time between the two distances and hence the speed of the delivery.
+
+4.5.3 Data Acquisition and Visualization:
+The data collected from sensor matrix is fed to Arduino where processing of the data takes places. Further, the processed data is then sent serially to Processing 3 software which is used to format the data and load in CSV file. At the same time the formatted data is visualized in real time. CSV files are used to store the data on line, length and speed of delivery. This accumulated data is used for long-term analysis of trends in performance. The data from CSV files is loaded in python and analyzed using graphs to show the tabular data in simple form. Finally, a GUI is developed to give user a smooth access to this data. 
